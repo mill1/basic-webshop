@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "999fdf2e-36e6-4d99-a251-22c168ad9eda",
+		"name": "Earless",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add order",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"date\": \"2019-11-01T00:00:00\",\n    \"remark\": \"Klant geeft aan: 'Ik ben voor vijven nooit thuis'\",\n    \"orderLines\": [\n        {\n            \"product\": {\n                \"id\": 1,\n                \"productCategory\": {\n                    \"id\": 1,\n                    \"name\": \"Gehoorapparaten\"\n                },\n                \"name\": \"Widex EVOKE 440 Fusion 2 direct streaming\",\n                \"description\": \"Widex EVOKE 440 Fusion 2 direct streaming\",\n                \"price\": 1492.22\n            },\n            \"quantity\": 1,\n            \"fulfilled\": 0\n        },\n        {\n            \"product\": {\n                \"id\": 12,\n                \"productCategory\": {\n                    \"id\": 2,\n                    \"name\": \"Accessoires en schoonmaakartikelen\"\n                },\n                \"name\": \"Cedis Reinigingstabletten\",\n                \"description\": \"Cedis Reinigingstabletten\",\n                \"price\": 3.75\n            },\n            \"quantity\": 2,\n            \"fulfilled\": 0\n        },\n        {\n            \"product\": {\n                \"id\": 21,\n                \"productCategory\": {\n                    \"id\": 3,\n                    \"name\": \"Batterijen en accu's\"\n                },\n                \"name\": \"TakeCare 10\",\n                \"description\": \"TakeCare 10\",\n                \"price\": 1.29\n            },\n            \"quantity\": 3,\n            \"fulfilled\": 0\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44367/api/order/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"order",
+						""
+					]
+				},
+				"description": "Add an order"
+			},
+			"response": []
+		},
+		{
+			"name": "delete order id:21",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44367/api/order/10",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"order",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all orders",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44367/api/order",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get order 1",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44367/api/order/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update order id: 1 ; 2 orderlines",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"date\": \"2019-11-01T00:00:00\",\n    \"remark\": \"Niet afleveren bij de buren!\",\n    \"fulfilled\": true,\n    \"orderLines\": [\n        {\n            \"id\": 1,\n            \"product\": {\n                \"id\": 1,\n                \"productCategory\": {\n                    \"id\": 1,\n                    \"name\": \"Gehoorapparaten\"\n                },\n                \"name\": \"Phonak Audéo M90-R – oplaadbaar\",\n                \"description\": \"Phonak Audéo M90-R – oplaadbaar\",\n                \"price\": 1599\n            },\n            \"quantity\": 1\n        },\n        {\n            \"id\": 7,\n            \"product\": {\n                \"id\": 20,\n                \"productCategory\": {\n                    \"id\": 3,\n                    \"name\": \"Batterijen en accu's\"\n                },\n                \"name\": \"PowerOne p10\",\n                \"description\": \"PowerOne p10\",\n                \"price\": 1.49\n            },\n            \"quantity\": 5\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44367/api/order/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update order id: 1 ; 1 orderline",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"date\": \"2019-11-03T00:00:00\",\n    \"remark\": \"Niet afleveren bij de buren!!\",\n    \"fulfilled\": true,\n    \"orderLines\": [\n        {\n            \"id\": 1,\n            \"product\": {\n                \"id\": 1,\n                \"productCategory\": {\n                    \"id\": 1,\n                    \"name\": \"Gehoorapparaten\"\n                },\n                \"name\": \"Phonak Audéo M90-R – oplaadbaar\",\n                \"description\": \"Phonak Audéo M90-R – oplaadbaar\",\n                \"price\": 1599\n            },\n            \"quantity\": 1\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44367/api/order/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all products",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44367/api/order",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get product 1",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44367/api/product/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"product",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get products per category",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44367/api/product/GetByCategory/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"product",
+						"GetByCategory",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get productcategories",
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyHasjklhd",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:44367/api/product/Categories",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44367",
+					"path": [
+						"api",
+						"product",
+						"Categories"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

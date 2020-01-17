@@ -1,0 +1,29 @@
+<ng-container *ngIf="(order$ | async) as order; else loading">
+
+  <tbody>
+    <tr>
+      <td><a [routerLink]="['/order/edit/', order.id]" class="btn btn-primary btn-sm float-right mb-3">Edit order</a>
+      </td>
+      <td>&nbsp;</td>
+      <td><a [routerLink]="" (click)="delete(order.id)" class="btn btn-danger btn-sm float-right mb-3">Delete order</a>
+      </td>
+    </tr>
+  </tbody>
+
+  <h1>Order {{ order.id }}</h1>
+
+  <div>
+    <div>Order date: {{ order.date | date: "dd/MM/yyyy" }}</div>
+    <div>Remark: {{ order.remark }}</div>
+  </div>
+  <hr>
+  <div>
+    <u>Items:</u>
+    <ul>
+      <li *ngFor="let orderLine of order.orderLines">
+        {{orderLine.product.name}} Price: € {{orderLine.product.price | number: '1.2'}} Quantity: {{orderLine.quantity}}
+      </li>
+    </ul>
+  </div>
+</ng-container>
+<ng-template #loading>Loading…</ng-template>

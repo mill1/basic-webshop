@@ -1,0 +1,15 @@
+<ng-container *ngIf="(orderLine$ | async) as orderLine; else loading">
+
+    <h1>Orderline {{ orderLine.id }}</h1>
+    <div>Product:</div>
+    <ul>
+      <li>Name: {{ orderLine.product.name }}</li>
+      <li>Descr.: {{ orderLine.product.description }}</li>
+      <li>Price: {{ orderLine.product.price | number: '1.2' }}</li>
+      <li>Product category: {{ orderLine.product.productCategory.name }}</li>
+    </ul>
+  
+    <div>Quantity: {{ orderLine.quantity }}</div>
+
+  </ng-container>
+  <ng-template #loading>Loading…</ng-template>

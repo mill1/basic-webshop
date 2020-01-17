@@ -1,0 +1,48 @@
+<h1>Orders</h1>
+
+<p *ngIf="!(orders$ | async)"><em>Loading...</em></p>
+<p>
+  <a [routerLink]="['add']" class="btn btn-primary float-right mb-3">New order</a>
+</p>
+
+<table class="table table-sm table-hover" *ngIf="orders.length > 0">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Remark</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders">
+      <td>{{ order.id }}</td>
+      <td><a [routerLink]="['/order/', order.id]">Order {{ order.id }}</a></td>
+      <td>{{ order.date | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ order.remark }}</td>
+      <td><a [routerLink]="['/order/edit/', order.id]" class="btn btn-primary btn-sm float-right">Edit</a></td>
+      <td>
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">{{ modalTitle}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{modalContent}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-sm float-right"
+              (click)="modal.close('`Yes` click')">Yes</button>
+            <button type="button" class="btn btn-primary btn-sm float-right"
+              (click)="modal.dismiss('`No` click')">No</button>
+          </div>
+        </ng-template>
+        <button class="btn btn-danger btn-sm float-right" (click)="open(content, order.id)">{{modalTitle}}</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

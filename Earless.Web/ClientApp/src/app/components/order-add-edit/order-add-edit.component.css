@@ -1,0 +1,22 @@
+.oae-orderline-input{ 
+    width: 100%;
+}
+.oae-orderline-cell-id{
+    width: 40px;
+}
+
+.oae-orderline-cell-productname{
+    width: 400px;
+}
+.oae-orderline-cell-productprice{
+    width: 150px;
+}
+.oae-orderline-cell-subtotal{
+    width: 150px;
+}
+.oae-orderline-cell-quantity{
+    width: 40px;
+}
+.oae-orderline-cell-button{
+    width: 100px;
+}

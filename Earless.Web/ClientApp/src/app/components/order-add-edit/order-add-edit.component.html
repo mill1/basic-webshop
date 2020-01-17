@@ -1,0 +1,80 @@
+<div *ngIf="order && order.orderLines">
+  <h1>{{actionType}} order</h1>
+  <label class=" control-label col-md-12">Remark</label>
+  <div class="col-md-12" *ngIf="order.orderLines">
+    <input class="form-control" type="text" name="remark" [(ngModel)]="order.remark">
+  </div>
+  <br />
+  <h3>Orderlines:</h3>
+  <button (click)="addOrderLine()" class="btn btn-primary float-right mb-3">New orderline</button>
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th class="oae-orderline-cell-id">Id</th>
+        <th class="oae-orderline-cell-id">Product Id</th>
+        <th class="oae-orderline-cell-productname">Product name</th>
+        <th class="oae-orderline-cell-productprice">Price</th>
+        <th class="oae-orderline-cell-quantity">Quantity</th>
+        <th class="oae-orderline-cell-subtotal">Subtotal</th>
+        <th class="oae-orderline-cell-button"></th>
+        <th class="oae-orderline-cell-button"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <ng-container *ngIf="editMode">
+          <td> {{ order.orderLines[indexEditedRecord].id }} </td>
+          <td><input class="oae-orderline-input" type="number" name="productid"
+              [(ngModel)]="order.orderLines[indexEditedRecord].product.id"></td>
+          <td><a
+              [routerLink]="['/orderline/', order.orderLines[indexEditedRecord].id]">{{ order.orderLines[indexEditedRecord].product.name }}</a>
+          </td>
+          <td>€ {{ order.orderLines[indexEditedRecord].product.price | number: '1.2' }}</td>
+          <td><input class="oae-orderline-input" type="number" name="quantity"
+              [(ngModel)]="order.orderLines[indexEditedRecord].quantity"></td>
+          <td>€
+            {{ order.orderLines[indexEditedRecord].product.price * order.orderLines[indexEditedRecord].quantity | number: '1.2' }}
+          </td>
+          <td><button [disabled]="order.orderLines[indexEditedRecord].quantity === 0" (click)="viewRecord()"
+              class="btn btn-danger btn-sm float-right">Done</button></td>
+          <td></td>
+        </ng-container>
+      </tr>
+      <tr *ngFor="let orderLine of order.orderLines">
+        <ng-container *ngIf="!editMode && order.orderLines.indexOf(orderLine) !== indexEditedRecord">
+          <td> {{ orderLine.id }} </td>
+          <td>
+            <span *ngIf="orderLine.id === 0">{{ orderLine.product.id }}</span>
+            <span *ngIf="orderLine.id !== 0"><a
+                [routerLink]="['/orderline/', orderLine.id]">{{ orderLine.product.id }}</a></span>
+          </td>
+          <td>
+            <span *ngIf="orderLine.id === 0">{{ orderLine.product.name }}</span>
+            <span *ngIf="orderLine.id !== 0"><a
+                [routerLink]="['/orderline/', orderLine.id]">{{ orderLine.product.name }}</a></span>
+          </td>
+          <td>€ {{ orderLine.product.price | number: '1.2' }}</td>
+          <td>{{ orderLine.quantity }}</td>
+          <td>€ {{ orderLine.product.price * orderLine.quantity | number: '1.2' }}</td>
+          <td><button (click)="editRecord(order.orderLines.indexOf(orderLine))"
+              class="btn btn-primary btn-sm float-right">Edit</button></td>
+          <td><button [disabled]="!hasMultipleOrderlines()" [routerLink]=""
+              (click)="deleteOrderLine(order.orderLines.indexOf(orderLine))"
+              class="btn btn-danger btn-sm float-right">Delete!</button></td>
+        </ng-container>
+      </tr>
+      <tr>
+        <td colspan="5"></td>
+        <td *ngIf="total">€ {{ total | number: '1.2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <button [routerLink]="['/order/', order.id]" routerLinkActive="router-link-active"
+      class="btn btn-secondary float-left">Cancel</button>
+  </div>
+  <div>
+    <button [disabled]="editMode || order.orderLines.length === 0" type="submit" class="btn btn-success float-right"
+      (click)="save()">Save</button>
+  </div>
+</div>

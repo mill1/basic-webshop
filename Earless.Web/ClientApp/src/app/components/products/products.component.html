@@ -1,0 +1,29 @@
+ <!-- (products$ | async) = impliciete subscription (.subscribe) met products als resultaat -->
+<ng-container *ngIf="(products$ | async) as products; else loading">
+<h1>Products</h1>
+
+  <div *ngFor="let pcp of productcategoryproducts">
+    <h4>{{ pcp.productCategory.name }}</h4>
+
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prod of pcp.products">
+          <td>{{ prod.id }}</td>
+          <td>
+            <a [routerLink]="['/product/', prod.id]">{{ prod.name }}</a>
+          </td>
+          <td>{{ prod.price | number: "1.2" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</ng-container>
+<ng-template #loading>Loading…</ng-template>

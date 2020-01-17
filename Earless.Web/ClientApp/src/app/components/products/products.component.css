@@ -1,0 +1,8 @@
+table {
+    table-layout: fixed;
+}
+
+th:nth-child(3), td:nth-child(3) {
+    text-align: right;
+}
+
