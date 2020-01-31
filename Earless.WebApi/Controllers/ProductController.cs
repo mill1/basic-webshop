@@ -20,37 +20,60 @@ namespace Earless.WebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IEnumerable<DTO.Product> Get()
         {
-            return productService.GetProducts();
+            return MapModelToDTO(productService.GetProducts());
         }
 
         [HttpGet("{id}")]
-        public Product GetProductByProductNumber(int id)
+        public DTO.Product GetProductByProductNumber(int id)
         {
             if (id < 1)
                 throw new Exception($"Product id's below 1 are not supported. Requested product id = {id}");
 
-            Product product = productService.GetProduct(id);
+            DTO.Product product = MapModelToDTO(productService.GetProduct(id));
 
             return product;
         }
 
-        [HttpGet("GetByCategory/{productCategoryId}")]
-        public IEnumerable<Product> GetProductByProductCategory(int productCategoryId)
-        {
-            if (productCategoryId < 1)
-                throw new Exception($"Productcategory id's below 1 are not supported. Requested productcategory id = {productCategoryId}");
+        /*
+         * Obsolete. See products.component.ts.getProductsPerCategory()
+         */
+        //[HttpGet("GetByCategory/{productCategoryId}")]
+        //public IEnumerable<DTO.Product> GetProductByProductCategory(int productCategoryId)
+        //{
+        //    if (productCategoryId < 1)
+        //        throw new Exception($"Productcategory id's below 1 are not supported. Requested productcategory id = {productCategoryId}");
 
-            return productService.GetProducts(productCategoryId); ;
-        }
+        //    return MapModelToDTO(productService.GetProducts(productCategoryId));
+        //}
 
         [HttpGet("Categories")]
-        public IEnumerable<ProductCategory> GetProductCategories()
+        public IEnumerable<DTO.ProductCategory> GetProductCategories()
         {
-            return productService.GetProductCategories();
+            return MapModelToDTO(productService.GetProductCategories());
         }
 
+        private IEnumerable<DTO.ProductCategory> MapModelToDTO(IEnumerable<ProductCategory> productCategories)
+        {
+            return productCategories.Select(pc => new DTO.ProductCategory { Id = pc.Id, Name = pc.Name });
+        }
 
+        private DTO.Product MapModelToDTO(Product product)
+        {
+            return new DTO.Product
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                ProductCategoryId = product.ProductCategory.Id
+            };
+        }
+
+        private IEnumerable<DTO.Product> MapModelToDTO(IEnumerable<Product> products)
+        {
+            return products.Select(p => MapModelToDTO(p));
+        }
     }
 }

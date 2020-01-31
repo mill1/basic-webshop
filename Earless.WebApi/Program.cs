@@ -13,7 +13,7 @@ namespace Earless.WebApi
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             IHostBuilder hostBuilder = CreateHostBuilder(args);
             IHost host = hostBuilder.Build();
@@ -21,7 +21,7 @@ namespace Earless.WebApi
             using (var scope = host.Services.CreateScope())
             {
                 DbInitializer initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
-                initializer.Initialize();
+                await initializer.Initialize();
             }
             host.Run();
         }

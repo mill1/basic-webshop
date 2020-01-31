@@ -5,6 +5,8 @@ import { Order } from '../../models/order.model';
 import * as moment from 'moment';
 import { OrderLine } from 'src/app/models/order-line.model';
 import { map } from 'rxjs/operators';
+import { Product } from 'src/app/models/product.model';
+import { ProductCategory } from 'src/app/models/product-category.model';
 
 @Component({
   selector: 'app-order-add-edit',
@@ -71,18 +73,20 @@ export class OrderAddEditComponent implements OnInit {
   }
 
   addOrderLine() {
-    const newOrderLine = {
-      id: 0,
-      quantity: 0,
-      fulfilled: 0,
-      product: {
-        id: 1,
-        name: 'Phonak Audéo M90-R – oplaadbaar',
-        description: 'Phonak Audéo M90-R – oplaadbaar',
-        price: 1599,
-        productCategory:  { id: 1, name: 'Gehoorapparaten' },
-      }
-    };
+    const newOrderLine: OrderLine = new OrderLine();
+
+    newOrderLine.id = 0;
+    newOrderLine.quantity = 0;
+    newOrderLine.fulfilled = 0;
+    newOrderLine.product = new Product();
+    newOrderLine.product.id = 1;
+    newOrderLine.product.name = 'Phonak Audéo M90-R – oplaadbaar',
+    newOrderLine.product.description = 'Phonak Audéo M90-R – oplaadbaar',
+    newOrderLine.product.price = 1599,
+    newOrderLine.product.productCategory = new ProductCategory();
+    newOrderLine.product.productCategory.id = 1;
+    newOrderLine.product.productCategory.name = 'Gehoorapparaten';
+
     this.order.orderLines.push(newOrderLine);
   }
 

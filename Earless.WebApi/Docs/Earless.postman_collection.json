@@ -28,7 +28,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"date\": \"2019-11-01T00:00:00\",\n    \"remark\": \"Klant geeft aan: 'Ik ben voor vijven nooit thuis'\",\n    \"orderLines\": [\n        {\n            \"product\": {\n                \"id\": 1,\n                \"productCategory\": {\n                    \"id\": 1,\n                    \"name\": \"Gehoorapparaten\"\n                },\n                \"name\": \"Widex EVOKE 440 Fusion 2 direct streaming\",\n                \"description\": \"Widex EVOKE 440 Fusion 2 direct streaming\",\n                \"price\": 1492.22\n            },\n            \"quantity\": 1,\n            \"fulfilled\": 0\n        },\n        {\n            \"product\": {\n                \"id\": 12,\n                \"productCategory\": {\n                    \"id\": 2,\n                    \"name\": \"Accessoires en schoonmaakartikelen\"\n                },\n                \"name\": \"Cedis Reinigingstabletten\",\n                \"description\": \"Cedis Reinigingstabletten\",\n                \"price\": 3.75\n            },\n            \"quantity\": 2,\n            \"fulfilled\": 0\n        },\n        {\n            \"product\": {\n                \"id\": 21,\n                \"productCategory\": {\n                    \"id\": 3,\n                    \"name\": \"Batterijen en accu's\"\n                },\n                \"name\": \"TakeCare 10\",\n                \"description\": \"TakeCare 10\",\n                \"price\": 1.29\n            },\n            \"quantity\": 3,\n            \"fulfilled\": 0\n        }\n    ]\n}",
+					"raw": "{\n    \"date\": \"2019-11-01T00:00:00\",\n    \"remark\": \"Klant geeft aan: 'Ik ben voor vijven nooit thuis'\",\n    \"orderLines\": [\n        {\n            \"productId\": 1,\n            \"quantity\": 1,\n            \"fulfilled\": 0\n        },\n        {\n            \"productId\": 12,\n            \"quantity\": 2,\n            \"fulfilled\": 0\n        },\n        {\n            \"productId\": 21,\n            \"quantity\": 3,\n            \"fulfilled\": 0\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -68,7 +68,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:44367/api/order/10",
+					"raw": "https://localhost:44367/api/order/5",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -77,7 +77,7 @@
 					"path": [
 						"api",
 						"order",
-						"10"
+						"5"
 					]
 				}
 			},
@@ -167,7 +167,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 1,\n    \"date\": \"2019-11-01T00:00:00\",\n    \"remark\": \"Niet afleveren bij de buren!\",\n    \"fulfilled\": true,\n    \"orderLines\": [\n        {\n            \"id\": 1,\n            \"product\": {\n                \"id\": 1,\n                \"productCategory\": {\n                    \"id\": 1,\n                    \"name\": \"Gehoorapparaten\"\n                },\n                \"name\": \"Phonak Audéo M90-R – oplaadbaar\",\n                \"description\": \"Phonak Audéo M90-R – oplaadbaar\",\n                \"price\": 1599\n            },\n            \"quantity\": 1\n        },\n        {\n            \"id\": 7,\n            \"product\": {\n                \"id\": 20,\n                \"productCategory\": {\n                    \"id\": 3,\n                    \"name\": \"Batterijen en accu's\"\n                },\n                \"name\": \"PowerOne p10\",\n                \"description\": \"PowerOne p10\",\n                \"price\": 1.49\n            },\n            \"quantity\": 5\n        }\n    ]\n}",
+					"raw": "{\n    \"id\": 1,\n    \"date\": \"2019-11-01T00:00:00\",\n    \"remark\": \"Niet afleveren bij de buren!\",\n    \"fulfilled\": true,\n    \"orderLines\": [\n        {\n            \"id\": 1,\n            \"productId\": 1, \n            \"quantity\": 1,\n            \"fulfilled\": 1\n        },\n        {\n            \"productId\": 20,\n            \"quantity\": 5,\n            \"fullfilled\": 0\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -207,13 +207,13 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 1,\n    \"date\": \"2019-11-03T00:00:00\",\n    \"remark\": \"Niet afleveren bij de buren!!\",\n    \"fulfilled\": true,\n    \"orderLines\": [\n        {\n            \"id\": 1,\n            \"product\": {\n                \"id\": 1,\n                \"productCategory\": {\n                    \"id\": 1,\n                    \"name\": \"Gehoorapparaten\"\n                },\n                \"name\": \"Phonak Audéo M90-R – oplaadbaar\",\n                \"description\": \"Phonak Audéo M90-R – oplaadbaar\",\n                \"price\": 1599\n            },\n            \"quantity\": 1\n        }\n    ]\n}",
+					"raw": "{\n    \"id\": 1,\n    \"date\": \"2019-11-03T00:00:00\",\n    \"remark\": \"Niet afleveren bij de buren!!\",\n    \"fulfilled\": true,\n    \"orderLines\": [\n        {\n            \"id\": 1,\n            \"productId\": 1,\n            \"quantity\": 1,\n            \"fulfilled\": 0\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"

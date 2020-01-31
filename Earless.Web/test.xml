@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<testsuite name="HeadlessChrome 78.0.3882 (Windows 10.0.0)" package="" timestamp="2020-01-31T17:31:27" id="0" hostname="DESKTOP-JR2S9BM" tests="7" errors="0" failures="0" time="0.276">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/78.0.3882.0 Safari/537.36"/>
+  </properties>
+  <testcase name="Service: OrderLine should create orderLine-service" time="0.054" classname="Service: OrderLine"/>
+  <testcase name="Service: Order deleteOrder 01. Should be able to delete Order" time="0.026" classname="Service: Order"/>
+  <testcase name="Service: Order should create order-service" time="0.021" classname="Service: Order"/>
+  <testcase name="Service: Product 01. should be able to map Product to ProductDto" time="0.018" classname="Service: Product"/>
+  <testcase name="Service: Product should create product-service" time="0.02" classname="Service: Product"/>
+  <testcase name="OrderComponent 01. Should be able to perform a test" time="0.094" classname="OrderComponent"/>
+  <testcase name="OrderComponent should create" time="0.043" classname="OrderComponent"/>
+  <system-out>
+    <![CDATA[Chrome 78.0.3882 (Windows 10.0.0) ERROR
+  DisconnectedClient disconnected from CONNECTED state (transport error)
+,Chrome 78.0.3882 (Windows 10.0.0) LOG: 'Test my test'
+,HeadlessChrome 78.0.3882 (Windows 10.0.0) LOG: 'Test my test'
+
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

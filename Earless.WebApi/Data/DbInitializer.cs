@@ -19,8 +19,10 @@ namespace Earless.WebApi.Data
             options = subOptionsAccessor.CurrentValue;
         }
 
-        public void Initialize()
+        public virtual async Task Initialize()
         {
+            await UpdateSchema();
+
             // Clear all tables
             if (options.ClearTables)
             {
@@ -31,7 +33,7 @@ namespace Earless.WebApi.Data
                     "ProductCategory",
                 });
 
-                tableNames.ForEach(t => context.Database.ExecuteSqlCommand(string.Format("DELETE FROM {0}", t)));
+                tableNames.ForEach(t => context.Database.ExecuteSqlRaw(string.Format("DELETE FROM {0}", t)));
 
                 context.SaveChanges();
             }
@@ -45,6 +47,15 @@ namespace Earless.WebApi.Data
 
             if (options.ClearTables || options.SeedDatabase)
                 context.SaveChanges();
+        }
+
+        public virtual async Task UpdateSchema()
+        {
+            // Migrations are not possible while using InMemory DBs
+            if (context.Database.IsInMemory())
+                await context.Database.EnsureCreatedAsync();
+            else 
+                await context.Database.MigrateAsync();
         }
     }
 }
