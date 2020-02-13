@@ -20,14 +20,25 @@ namespace Earless.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public OrderLine GetOrderLineByOrderLineNumber(int id)
+        public DTO.OrderLine GetOrderLineByOrderLineNumber(int id)
         {
             if (id < 1)
                 throw new Exception($"Orderline id's below 1 are not supported. Requested orderline id = {id}");
 
             OrderLine orderLine = orderLineService.GetOrderLine(id);
 
-            return orderLine;
+            return MapModelToDto(orderLine);
+        }
+
+        private DTO.OrderLine MapModelToDto(OrderLine orderLine)
+        {
+            return new DTO.OrderLine
+            {
+                Id = orderLine.Id,
+                ProductId = orderLine.Product.Id,
+                Quantity = orderLine.Quantity,
+                Fulfilled= orderLine.Fulfilled
+            };
         }
     }
 }

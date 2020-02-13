@@ -25,8 +25,8 @@ export class ProductsComponent {
   constructor(private productService: ProductService) {
     this.productcategories$ = this.productService.getProductCategories();
     this.products$ = this.productService.getProducts();
-    this.products$.subscribe(x => {
-      this.products = x ;
+    this.products$.subscribe(p => {
+      this.products = p ;
       this.initialize();
     });
   }

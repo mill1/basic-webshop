@@ -7,6 +7,7 @@
     "build": "ng build",
     "build:ssr": "ng run Earless.Web:server:dev",
     "test": "ng test",
+    "test-single-headless": "ng test --watch=false --browsers=ChromeHeadless --reporters=progress,junit",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -34,7 +35,7 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.22",
+    "@angular-devkit/build-angular": "^0.803.23",
     "@angular/cli": "8.0.6",
     "@angular/compiler-cli": "8.0.0",
     "@angular/language-service": "8.0.0",
@@ -49,11 +50,13 @@
     "karma-coverage-istanbul-reporter": "^2.1.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "karma-junit-reporter": "^1.2.0",
     "typescript": "3.4.5"
   },
   "optionalDependencies": {
     "node-sass": "^4.9.3",
     "protractor": "~5.4.0",
+    "puppeteer": "^1.0.0",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1"
   }
