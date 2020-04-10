@@ -6,7 +6,6 @@ using Earless.WebApi.Models;
 
 namespace Earless.WebApi.Test.Mocks
 {
-    // mock edit
     public class MockFactory
     {
         private static List<ProductCategory> productCategories;
