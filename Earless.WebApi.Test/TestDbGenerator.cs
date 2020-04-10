@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Earless.WebApi.Data;
-using Earless.WebApi.Models;
 using System;
-using System.Runtime.CompilerServices;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace Earless.WebApi.Test

@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Xunit;
 using Earless.WebApi.Data;
 using Earless.WebApi.Models;
 using Earless.WebApi.Services;
+using Earless.WebApi.Test.Mocks;
+using Earless.WebApi.Interfaces;
 
-namespace Earless.WebApi.Test
+namespace Earless.WebApi.Test.Services
 {
+    [Collection("Realm tests")]
     public class ProductServiceTest : IDisposable
     {
-        private readonly EarlessContext context;
-        private readonly ProductService productService;
-        private readonly MockFactory mockFactory;
+        private EarlessContext context;
+        private readonly IProductService productService;
         private readonly int productCount;
+        private readonly MockFactory mockFactory = new MockFactory();
 
         public ProductServiceTest()
         {
-            context = TestDbGenerator.CreateContext();
-            productService = new ProductService(context);
-            TestDbGenerator.Initialize(context);
-            mockFactory = new MockFactory(context);
+            context = mockFactory.InitializeContext();
+            productService = new ProductService(context); 
             productCount = context.Products.Count();
         }
 
@@ -72,7 +72,9 @@ namespace Earless.WebApi.Test
         [Fact]
         public void GetProductFromOrderLineTestFound()
         {
-            Product product = mockFactory.CreateOrder().OrderLines.First().Product;
+            var orderLines = mockFactory.CreateOrder().OrderLines;
+
+            Product product = orderLines.First().Product;
             Assert.NotNull(product);
         }
     }

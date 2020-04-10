@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Earless.WebApi.Models;
-using Earless.WebApi.Services;
+using Microsoft.Extensions.Logging;
+using Earless.WebApi.Interfaces;
 
 namespace Earless.WebApi.Controllers
 {
@@ -12,68 +11,47 @@ namespace Earless.WebApi.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ProductService productService;
+        private readonly IProductService productService;
+        private readonly Mapper mapper;
+        private readonly ILogger<ProductController> logger;
 
-        public ProductController(ProductService productService)
+        public ProductController(IProductService productService, Mapper mapper, ILogger<ProductController> logger)
         {
             this.productService = productService;
+            this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpGet]
-        public IEnumerable<DTO.Product> Get()
+        public IActionResult Get()
         {
-            return MapModelToDTO(productService.GetProducts());
+            return Ok(mapper.MapModelToDto(productService.GetProducts()));
         }
 
         [HttpGet("{id}")]
-        public DTO.Product GetProductByProductNumber(int id)
+        public IActionResult GetProductByProductNumber(int id)
         {
-            if (id < 1)
-                throw new Exception($"Product id's below 1 are not supported. Requested product id = {id}");
+            try
+            {
+                Product product = productService.GetProduct(id);
 
-            DTO.Product product = MapModelToDTO(productService.GetProduct(id));
-
-            return product;
+                if (product == null)
+                    return NotFound($"The product was not found. Requested product id = {id}.");
+            
+                return Ok(mapper.MapModelToDto(product));
+            }
+            catch (Exception e)
+            {
+                string message = $"Getting the product failed. Requested product id = {id}.";
+                logger.LogError($"{message}\r\n{e.Message}", e);
+                return BadRequest(message);
+            }
         }
-
-        /*
-         * Obsolete. See products.component.ts.getProductsPerCategory()
-         */
-        //[HttpGet("GetByCategory/{productCategoryId}")]
-        //public IEnumerable<DTO.Product> GetProductByProductCategory(int productCategoryId)
-        //{
-        //    if (productCategoryId < 1)
-        //        throw new Exception($"Productcategory id's below 1 are not supported. Requested productcategory id = {productCategoryId}");
-
-        //    return MapModelToDTO(productService.GetProducts(productCategoryId));
-        //}
 
         [HttpGet("Categories")]
-        public IEnumerable<DTO.ProductCategory> GetProductCategories()
+        public IActionResult GetProductCategories()
         {
-            return MapModelToDTO(productService.GetProductCategories());
-        }
-
-        private IEnumerable<DTO.ProductCategory> MapModelToDTO(IEnumerable<ProductCategory> productCategories)
-        {
-            return productCategories.Select(pc => new DTO.ProductCategory { Id = pc.Id, Name = pc.Name });
-        }
-
-        private DTO.Product MapModelToDTO(Product product)
-        {
-            return new DTO.Product
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                ProductCategoryId = product.ProductCategory.Id
-            };
-        }
-
-        private IEnumerable<DTO.Product> MapModelToDTO(IEnumerable<Product> products)
-        {
-            return products.Select(p => MapModelToDTO(p));
+            return Ok(mapper.MapModelToDto(productService.GetProductCategories()));
         }
     }
 }

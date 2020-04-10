@@ -2,19 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Earless.WebApi.Data;
 using Earless.WebApi.Models;
 using MoreLinq;
+using Earless.WebApi.Interfaces;
 
 namespace Earless.WebApi.Services
 {
-    public class OrderService
+    public class OrderService: IOrderService
     {
         private readonly EarlessContext context;
-        private readonly OrderLineService orderLineService;
+        private readonly IOrderLineService orderLineService;
 
-        public OrderService(EarlessContext context, OrderLineService orderLineService)
+        public OrderService(EarlessContext context, IOrderLineService orderLineService)
         {
             this.context = context;
             this.orderLineService = orderLineService;

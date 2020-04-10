@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Earless.WebApi.Models
 {
@@ -17,5 +15,13 @@ namespace Earless.WebApi.Models
         public string Remark { get; set; }
         
         public ICollection<OrderLine> OrderLines { get; set; }
+
+        public override bool Equals(Object obj) {
+            Order order = obj as Order;
+            if (order.Id.Equals(this.Id))
+                return true;
+            else return false;
+        }
+
     }
 }

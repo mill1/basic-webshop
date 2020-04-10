@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Xunit;
 using Earless.WebApi.Data;
 using Earless.WebApi.Models;
 using Earless.WebApi.Services;
+using Earless.WebApi.Test.Mocks;
+using Earless.WebApi.Interfaces;
 
-namespace Earless.WebApi.Test
+namespace Earless.WebApi.Test.Services
 {
+    [Collection("Realm tests")]
     public class OrderServiceTest : IDisposable
     {
         private readonly EarlessContext context;
-        private readonly OrderService orderService;
-        private readonly OrderLineService orderLineService;
-        private readonly MockFactory mockFactory;
+        private readonly IOrderService orderService;
+        private readonly IOrderLineService orderLineService;
+        private readonly MockFactory mockFactory = new MockFactory();
 
         public OrderServiceTest()
         {
-            context = TestDbGenerator.CreateContext();
+            context = mockFactory.InitializeContext();
             orderLineService = new OrderLineService(context);
-            orderService = new OrderService(context, orderLineService);
-            TestDbGenerator.Initialize(context);
-            mockFactory = new MockFactory(context);
+            orderService = new OrderService(context, orderLineService);           
         }
 
         public void Dispose()
@@ -50,7 +50,6 @@ namespace Earless.WebApi.Test
         public void AddOrderTest()
         {
             Order order = orderService.AddOrder(mockFactory.CreateOrder());
-
             Assert.Equal(1, order.Id);
         }
 
@@ -62,7 +61,8 @@ namespace Earless.WebApi.Test
 
             for (int i = 0; i < orderCount; i++)
             {
-                context.Add(mockFactory.CreateOrder());
+                Order order = mockFactory.CreateOrder();
+                context.Add(order);
                 context.SaveChanges();
             }
             

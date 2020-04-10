@@ -2,14 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Earless.WebApi.Data;
 using Earless.WebApi.Models;
 using MoreLinq;
+using Earless.WebApi.Interfaces;
 
 namespace Earless.WebApi.Services
 {
-    public class ProductService
+    public class ProductService: IProductService
     {
         private readonly EarlessContext context;
 
@@ -38,9 +38,5 @@ namespace Earless.WebApi.Services
         {
             return GetProducts().Where(p => p.Id == id).FirstOrDefault();
         }
-
-
-
-        
     }
 }

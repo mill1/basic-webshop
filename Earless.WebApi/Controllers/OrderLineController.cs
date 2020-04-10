@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Earless.WebApi.Models;
-using Earless.WebApi.Services;
+using Microsoft.Extensions.Logging;
+using Earless.WebApi.Interfaces;
 
 namespace Earless.WebApi.Controllers
 {
@@ -12,33 +11,35 @@ namespace Earless.WebApi.Controllers
     [Route("api/[controller]")]
     public class OrderLineController : ControllerBase
     {
-        private readonly OrderLineService orderLineService;
+        private readonly IOrderLineService orderLineService;
+        private readonly Mapper mapper;
+        private readonly ILogger<OrderLineController> logger;
 
-        public OrderLineController(OrderLineService orderLineService)
+        public OrderLineController(IOrderLineService orderLineService, Mapper mapper, ILogger<OrderLineController> logger)
         {
             this.orderLineService = orderLineService;
+            this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpGet("{id}")]
-        public DTO.OrderLine GetOrderLineByOrderLineNumber(int id)
+        public IActionResult GetOrderLineByOrderLineNumber(int id)
         {
-            if (id < 1)
-                throw new Exception($"Orderline id's below 1 are not supported. Requested orderline id = {id}");
-
-            OrderLine orderLine = orderLineService.GetOrderLine(id);
-
-            return MapModelToDto(orderLine);
-        }
-
-        private DTO.OrderLine MapModelToDto(OrderLine orderLine)
-        {
-            return new DTO.OrderLine
+            try
             {
-                Id = orderLine.Id,
-                ProductId = orderLine.Product.Id,
-                Quantity = orderLine.Quantity,
-                Fulfilled= orderLine.Fulfilled
-            };
+                OrderLine orderLine = orderLineService.GetOrderLine(id);
+
+                if (orderLine == null)
+                    return NotFound($"The orderline was not found. Requested orderline id = {id}.");
+
+                return Ok(mapper.MapModelToDto(orderLine));
+            }
+            catch (Exception e)
+            {
+                string message = $"Getting the orderline failed. Requested orderline id = {id}.";
+                logger.LogError($"{message}\r\n{e.Message}", e);
+                return BadRequest(message);
+            }
         }
     }
 }

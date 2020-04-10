@@ -1,4 +1,7 @@
-﻿namespace Earless.WebApi.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace Earless.WebApi.Models
 {
     public class OrderLine
     {        

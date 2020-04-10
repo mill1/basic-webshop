@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Earless.WebApi.Models;
-using Earless.WebApi.Services;
+using Microsoft.Extensions.Logging;
+using Earless.WebApi.Interfaces;
 
 namespace Earless.WebApi.Controllers
 {
@@ -12,108 +11,96 @@ namespace Earless.WebApi.Controllers
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
-        private readonly OrderService orderService;
-        private readonly ProductService productService;
+        private readonly IOrderService orderService;
+        private readonly Mapper mapper;
+        private readonly ILogger<OrderController> logger;
 
-        public OrderController(OrderService orderService, ProductService productService)
+        public OrderController(IOrderService orderService, Mapper mapper, ILogger<OrderController> logger)
         {
             this.orderService = orderService;
-            this.productService = productService;
+            this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpGet]
-        public IEnumerable<DTO.Order> Get()
+        public IActionResult Get()
         {
-            IEnumerable<Order> orders =  orderService.GetOrders();
-
-            return MapModelToDto(orders);
+            return Ok(mapper.MapModelToDto(orderService.GetOrders()));
         }
 
         [HttpGet("{id}")]
-        public DTO.Order GetOrderByOrderNumber(int id)
+        public IActionResult GetOrderByOrderNumber(int id)
         {
-            if (id < 1)
-                throw new Exception($"Order id's below 1 are not supported. Requested order id = {id}");
+            try
+            {
+                Order order = orderService.GetOrder(id);
 
-            Order order = orderService.GetOrder(id);
+                if (order == null)
+                    return NotFound($"The order was not found. Requested order id = {id}.");
 
-            return MapModelToDto(order);
+                return Ok(mapper.MapModelToDto(order));
+            }
+            catch (Exception e)
+            {
+                string message = $"Getting the order failed. Requested order id = {id}.";
+                logger.LogError($"{message}\r\n{e.Message}", e);
+                return BadRequest(message);
+            }
         }
 
         [HttpPost]
-        public DTO.Order AddOrder([FromBody] DTO.Order orderDto)
+        public IActionResult AddOrder([FromBody] DTO.Order orderDto)
         {
             if (orderDto == null)
-                throw new Exception("Order object to add cannot be null.");
+                return BadRequest("Order object to add is null.");
 
-            Order order = orderService.AddOrder(MapDtoToModel(orderDto));
+            try
+            {
+                Order order = orderService.AddOrder(mapper.MapDtoToModel(orderDto));
 
-            return MapModelToDto(order);
+                return Ok(mapper.MapModelToDto(order));
+            }
+            catch (Exception e)
+            {
+                string message = "Adding the order failed.";
+                logger.LogError($"{message}\r\n{e.Message}", e);
+                return BadRequest(message);
+            }
         }
 
         [HttpPut]
-        public DTO.Order UpdateOrder([FromBody] DTO.Order orderDto)
+        public IActionResult UpdateOrder([FromBody] DTO.Order orderDto)
         {
             if (orderDto == null)
-                throw new Exception("Order object to update cannot be null.");
+                return BadRequest("Order object to update is null.");
 
-            Order order =  orderService.UpdateOrder(MapDtoToModel(orderDto));
-            return MapModelToDto(order);
+            try
+            {
+                Order order = orderService.UpdateOrder(mapper.MapDtoToModel(orderDto));
+                return Ok(mapper.MapModelToDto(order));
+            }
+            catch (Exception e)
+            {
+                string message = $"Updating the order failed. Order id = {orderDto.Id}.";
+                logger.LogError($"{message}\r\n{e.Message}", e);
+                return BadRequest(message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public int DeleteOrder(int id)
+        public IActionResult DeleteOrder(int id)
         {
-            if (id < 1)
-                throw new Exception($"Order id's below 1 are not supported. Requested order id = {id}");
-
-            orderService.DeleteOrder(id);
-            return id;
-        }
-
-        private IEnumerable<DTO.Order> MapModelToDto(IEnumerable<Order> orders)
-        {
-            return orders.Select(o => MapModelToDto(o));
-        }
-
-        private DTO.Order MapModelToDto(Order order)
-        {
-            return new DTO.Order
+            try
             {
-                Id = order.Id,
-                Date = order.Date,
-                Remark = order.Remark,
-                OrderLines = order.OrderLines.Select(ol =>
-                {
-                    return new DTO.OrderLine
-                    {
-                        Id = ol.Id,
-                        ProductId = ol.Product.Id,
-                        Quantity = ol.Quantity,
-                        Fulfilled = ol.Fulfilled
-                    };
-                }).ToList()
-            };
-        }
-
-        private Order MapDtoToModel(DTO.Order orderDto)
-        {
-            return new Order
+                orderService.DeleteOrder(id);
+                return Ok(id);
+            }
+            catch (Exception e)
             {
-                Id = orderDto.Id,
-                Date = orderDto.Date,
-                Remark = orderDto.Remark,
-                OrderLines = orderDto.OrderLines.Select(ol =>
-                {
-                    return new OrderLine 
-                    { 
-                        Id = ol.Id,
-                        Product = productService.GetProduct(ol.ProductId),
-                        Quantity = ol.Quantity,
-                        Fulfilled = ol.Fulfilled
-                    };
-                }).ToList()
-            };
+                string message = $"Deleting the order failed. Requested order id = {id}.";
+                logger.LogError($"{message}\r\n{e.Message}", e);
+                return BadRequest(message);
+            }
         }
     }
 }

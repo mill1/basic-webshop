@@ -47,7 +47,7 @@ namespace Earless.WebApi.Migrations
                     b.Property<int>("Fulfilled")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProductId")
@@ -114,7 +114,8 @@ namespace Earless.WebApi.Migrations
                     b.HasOne("Earless.WebApi.Models.Order", null)
                         .WithMany("OrderLines")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Earless.WebApi.Models.Product", "Product")
                         .WithMany()

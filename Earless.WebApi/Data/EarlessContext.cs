@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using Earless.WebApi.Models;
 
@@ -22,6 +21,12 @@ namespace Earless.WebApi.Data
                 .HasMany(o => o.OrderLines)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Required relationship
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderLines)
+                .WithOne()
+                .IsRequired();
 
             modelBuilder.Entity<Order>().Property(o => o.Date).HasColumnType("date");
 

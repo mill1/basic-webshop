@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Earless.WebApi.Services;
 using Earless.WebApi.Data;
+using Earless.WebApi.Interfaces;
 
 namespace Earless.WebApi
 {
@@ -36,11 +35,13 @@ namespace Earless.WebApi
             // Bind options using the miscellaneous sub-section of the appsettings.json file.
             services.Configure<InitializationOptions>(configuration.GetSection("Initialization"));
 
+            services.AddLogging();
             services.AddDbContext<EarlessContext>(optionActionCreator(webApiConnectionString));
             services.AddScoped<DbInitializer>();
-            services.AddScoped<OrderService>();
-            services.AddScoped<OrderLineService>();
-            services.AddScoped<ProductService>();
+            services.AddScoped<Mapper>();
+            services.AddScoped<IOrderLineService, OrderLineService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddControllers();
 
             services.AddCors(options =>

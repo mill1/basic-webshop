@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Xunit;
 using Earless.WebApi.Data;
 using Earless.WebApi.Models;
 using Earless.WebApi.Services;
+using Earless.WebApi.Test.Mocks;
+using Earless.WebApi.Interfaces;
 
-namespace Earless.WebApi.Test
+namespace Earless.WebApi.Test.Services
 {
+    [Collection("Realm tests")]
     public class OrderLineServiceTest : IDisposable
     {
         private readonly EarlessContext context;
-        private readonly OrderService orderService;
-        private readonly OrderLineService orderLineService;
-        private readonly MockFactory mockFactory;
+        private readonly IOrderService orderService;
+        private readonly IOrderLineService orderLineService;
+        private readonly MockFactory mockFactory = new MockFactory();
 
         public OrderLineServiceTest()
         {
-            context = TestDbGenerator.CreateContext();
+            context = mockFactory.InitializeContext();
             orderLineService = new OrderLineService(context);
-            orderService = new OrderService(context, orderLineService);
-            TestDbGenerator.Initialize(context);
-            mockFactory = new MockFactory(context);
+            orderService = new OrderService(context, orderLineService);            
         }
 
         public void Dispose()
@@ -59,15 +59,7 @@ namespace Earless.WebApi.Test
         {
             Order order = orderService.AddOrder(mockFactory.CreateOrder());
 
-            order.OrderLines.Add(new OrderLine 
-                                 { 
-                                    Product = new Product
-                                            {
-                                                Name = "Hoorbatterijen 10 geel",
-                                                Description = "Tien gele hoorbatterijen",
-                                                Price = 1.49,
-                                            },           
-                                    Quantity = 2 });
+            order.OrderLines.Add(mockFactory.CreateOrderLine(0, 2, 1, 0));
             context.SaveChanges();
 
             Order updatedOrder = orderService.UpdateOrder(order);
